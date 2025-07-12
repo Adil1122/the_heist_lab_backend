@@ -36,10 +36,12 @@ export class AuthService {
     const user = await this.usersService.create(data.name, data.email, hash);
 
     // activate user email
-    const html = 'Please go to the link to activate your account: <a href="' + this.getBaseUrl() + '/activate-user/' + user._id + '">Click Here</a>'
-    this.mailService.sendEmail(user.email, 'Email Activation', html);
+    var otp = Math.floor(Math.random() * 90000) + 10000;
+    const html = 'Your One Time Password (OTP) for Email Activation is <b>' + otp + '</b>';
+    this.mailService.sendEmail(user.email, 'Email Activation OTP', html);
+    const registered_user_details = {_id: user._id, email: user.email, otp: otp}
 
-    return { message: 'User registered', user: user, status_code: 200 };
+    return { message: 'User registered', registered_user_details: registered_user_details, status_code: 200 };
   }
 
   async login(data: AuthDto) { 
@@ -71,12 +73,25 @@ export class AuthService {
     return { message: 'Reset link generated (simulated)', token, status_code: 200 };
   }
 
-  async activateUser(id: string) {
-    const user = await this.usersService.activate(id);
-    if(user) {
-      return { message: 'User is activated', user: user, status_code: 200 }
+  async activateUser(id: string, otp:string, saved_otp:string, otp_time: number) {
+
+    const current_time = Date.now();
+    const five_minutes = 5 * 60 * 1000;
+
+    if(otp === saved_otp) {
+
+      if(current_time - otp_time > five_minutes) {
+        return { message: 'OTP Expired', status_code: 500 }
+      }
+      
+      const user = await this.usersService.activate(id);
+      if(user) {
+        return { message: 'User is activated', user: user, status_code: 200 }
+      } else {
+        return { message: 'User not found', status_code: 500 }
+      }
     } else {
-      return { message: 'User not found', status_code: 500 }
+      return { message: 'OTP Mismatched', status_code: 500 }
     }
   }
 

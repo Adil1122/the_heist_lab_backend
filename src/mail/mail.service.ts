@@ -14,8 +14,8 @@ export class MailService {
       auth: {
         //user: process.env.MAIL_USER,
         //pass: process.env.MAIL_PASS,
-        user: 'rex.murray@ethereal.email',
-        pass: '6tDDA8KTWu1XPXBXaC'
+        user: 'lawson5@ethereal.email',
+        pass: 'p5CYHQQfvyYMVqFxxw'
       },
     });
   }

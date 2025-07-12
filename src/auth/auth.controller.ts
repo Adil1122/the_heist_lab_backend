@@ -22,10 +22,15 @@ export class AuthController {
     return this.authService.forgotPassword(email);
   }
 
-  @Get('activate-user/:id')
+  /*@Get('activate-user/:id')
   activate(@Param('id') id: string) {
     return this.authService.activateUser(id);
-  }
+  }*/
+
+  @Post('activate-user')
+  activate(@Body('id') id: string, @Body('otp') otp:string, @Body('saved_otp') saved_otp:string, @Body('otp_time') otp_time: number) {
+    return this.authService.activateUser(id, otp, saved_otp, otp_time);
+  }  
 
   @Post('reset-password') 
   resetPassword(@Body('email') email: string, @Body('old_password') old_password, @Body('new_password') new_password, @Body('password_confirmation') password_confirmation) {
