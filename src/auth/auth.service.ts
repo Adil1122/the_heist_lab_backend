@@ -49,6 +49,8 @@ export class AuthService {
     if (!user) {
       return { message: 'Invalid credentials', status_code: 500 };
       //throw new Error('Invalid credentials');
+    } else if(user.status === 'inactive') {
+      return { message: 'Inactive user', status_code: 500 };
     }
 
     const isMatch = await bcrypt.compare(data.password, user.password);
