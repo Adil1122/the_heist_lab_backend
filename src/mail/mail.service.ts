@@ -8,14 +8,14 @@ export class MailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      //service: 'Gmail',
-      host: 'smtp.ethereal.email',
-      port: 587,
+      service: 'Gmail',
+      //host: 'smtp.ethereal.email',
+      //port: 587,
       auth: {
-        //user: process.env.MAIL_USER,
-        //pass: process.env.MAIL_PASS,
-        user: 'lawson5@ethereal.email',
-        pass: 'p5CYHQQfvyYMVqFxxw'
+        user: 'sheikh.muhammad.hanif.99@gmail.com',
+        pass: 'uofzwigbesydchwx',
+        //user: 'fleta.stracke15@ethereal.email',
+        //pass: 'DPSgHa7bE5DzqV4UhM'
       },
     });
   }

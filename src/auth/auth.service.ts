@@ -36,9 +36,7 @@ export class AuthService {
     const user = await this.usersService.create(data.name, data.email, hash);
 
     // activate user email
-    var otp = Math.floor(Math.random() * 90000) + 10000;
-    const html = 'Your One Time Password (OTP) for Email Activation is <b>' + otp + '</b>';
-    this.mailService.sendEmail(user.email, 'Email Activation OTP', html);
+    let otp = this.sendOtpEmail('activation', user.email);
     const registered_user_details = {_id: user._id, email: user.email, otp: otp}
 
     return { message: 'User registered', registered_user_details: registered_user_details, status_code: 200 };
@@ -100,5 +98,22 @@ export class AuthService {
   async resetPassword(email: string, old_password: string, new_password: string, password_confirmation: string) {
     const resetResponse = await this.usersService.resetPassword(email, old_password, new_password, password_confirmation);
     return { message: resetResponse.message, user: resetResponse.user, status_code: resetResponse.status_code }
+  }
+
+  sendOtpEmail(type: string, user_email: string) {
+
+    var otp = Math.floor(Math.random() * 90000) + 10000;
+    let html = 'Your One Time Password (OTP) for Email Activation is <b>' + otp + '</b>';
+    if(type === 'forgot') {
+      html = 'Your One Time Password (OTP) for Reset Password is <b>' + otp + '</b>';
+    }
+    this.mailService.sendEmail(user_email, 'Email Activation OTP', html);
+    return otp;
+  }
+
+  async sendForgotOtpEmail(user_email: string) {
+    var otp = this.sendOtpEmail('forgot', user_email);
+    const user = await this.usersService.findByEmail(user_email);
+    return { message: 'Otp sent', user: user, otp: otp, status_code: 200 }
   }
 }
