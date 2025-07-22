@@ -28,8 +28,8 @@ export class AuthController {
   }*/
 
   @Post('activate-user')
-  activate(@Body('id') id: string, @Body('otp') otp:string, @Body('saved_otp') saved_otp:string, @Body('otp_time') otp_time: number) {
-    return this.authService.activateUser(id, otp, saved_otp, otp_time);
+  activate(@Body('email') email: string, @Body('otp') otp:string, @Body('saved_otp') saved_otp:string, @Body('otp_time') otp_time: number) {
+    return this.authService.activateUser(email, otp, saved_otp, otp_time);
   }  
 
   @Post('reset-password') 
