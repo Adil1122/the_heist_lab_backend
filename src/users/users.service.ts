@@ -41,10 +41,10 @@ export class UsersService {
             user.save();
             return { message: 'Password successfully reset', user: user, status_code: 200 };
         } else {
-            return { message: 'Password confirmation missmatched', user: user, status_code: 500 };
+            return { message: 'Password confirmation missmatched', user: user, status_code: 501 };
         }
       }
     }
-    return { message: 'User not found', user: user, status_code: 500 };
+    return { message: 'User not found', user: user, status_code: 502 };
   }
 }
