@@ -18,9 +18,9 @@ export class UsersService {
     return user.save();
   }
 
-  async activate(id: string): Promise<User | null> {
+  async activate(email: string): Promise<User | null> {
 
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel.findOne({email}).exec();
     if(user) {
       user.status = 'active';
       return await user.save();

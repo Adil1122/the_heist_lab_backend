@@ -73,7 +73,7 @@ export class AuthService {
     return { message: 'Reset link generated (simulated)', token, status_code: 200 };
   }
 
-  async activateUser(id: string, otp:string, saved_otp:string, otp_time: number) {
+  async activateUser(email: string, otp:string, saved_otp:string, otp_time: number) {
 
     const current_time = Date.now();
     const five_minutes = 5 * 60 * 1000;
@@ -84,14 +84,14 @@ export class AuthService {
         return { message: 'OTP Expired', status_code: 500 }
       }
       
-      const user = await this.usersService.activate(id);
+      const user = await this.usersService.activate(email);
       if(user) {
         return { message: 'User is activated', user: user, status_code: 200 }
       } else {
-        return { message: 'User not found', status_code: 500 }
+        return { message: 'User not found', status_code: 501 }
       }
     } else {
-      return { message: 'OTP Mismatched', status_code: 500 }
+      return { message: 'OTP Mismatched', status_code: 502 }
     }
   }
 
