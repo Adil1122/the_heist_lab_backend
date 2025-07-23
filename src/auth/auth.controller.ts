@@ -33,8 +33,8 @@ export class AuthController {
   }  
 
   @Post('reset-password') 
-  resetPassword(@Body('email') email: string, @Body('old_password') old_password, @Body('new_password') new_password, @Body('password_confirmation') password_confirmation) {
-    return this.authService.resetPassword(email, old_password, new_password, password_confirmation);
+  resetPassword(@Body('email') email: string, @Body('new_password') new_password, @Body('password_confirmation') password_confirmation) {
+    return this.authService.resetPassword(email, new_password, password_confirmation);
   }
 
   @Post('send-forgot-otp')

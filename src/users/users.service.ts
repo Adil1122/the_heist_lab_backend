@@ -28,21 +28,16 @@ export class UsersService {
     return user;
   }
 
-  async resetPassword(email: string, old_password: string, new_password: string, password_confirmation: string): Promise<any> {
+  async resetPassword(email: string, new_password: string, password_confirmation: string): Promise<any> {
     const user = await this.userModel.findOne({ email });
     if(user) {
-      const isMatch = await bcrypt.compare(old_password, user.password);
-      if (!isMatch) {
-        return { message: 'Invalid old password', user: user, status_code: 500 };
+      if(new_password === password_confirmation) {
+          const hash = await bcrypt.hash(new_password, 10);
+          user.password = hash;
+          user.save();
+          return { message: 'Password successfully reset', user: user, status_code: 200 };
       } else {
-        if(new_password === password_confirmation) {
-            const hash = await bcrypt.hash(new_password, 10);
-            user.password = hash;
-            user.save();
-            return { message: 'Password successfully reset', user: user, status_code: 200 };
-        } else {
-            return { message: 'Password confirmation missmatched', user: user, status_code: 501 };
-        }
+          return { message: 'Password confirmation missmatched', user: user, status_code: 501 };
       }
     }
     return { message: 'User not found', user: user, status_code: 502 };

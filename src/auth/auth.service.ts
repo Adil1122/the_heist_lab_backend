@@ -95,8 +95,8 @@ export class AuthService {
     }
   }
 
-  async resetPassword(email: string, old_password: string, new_password: string, password_confirmation: string) {
-    const resetResponse = await this.usersService.resetPassword(email, old_password, new_password, password_confirmation);
+  async resetPassword(email: string, new_password: string, password_confirmation: string) {
+    const resetResponse = await this.usersService.resetPassword(email, new_password, password_confirmation);
     return { message: resetResponse.message, user: resetResponse.user, status_code: resetResponse.status_code }
   }
 
